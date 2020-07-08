@@ -1,32 +1,35 @@
-import org.ocpsoft.rewrite.annotation.Join;
-import org.ocpsoft.rewrite.annotation.RequestAction;
-import org.ocpsoft.rewrite.el.ELBeanName;
-import org.ocpsoft.rewrite.faces.annotation.Deferred;
-import org.ocpsoft.rewrite.faces.annotation.IgnorePostback;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="layout.xhtml">
+    <ui:define name="content">
+        <h:form id="form">
+            <p:panel header="Products List">
+                <p:dataTable id="table" var="product" value="#{productList.products}">
+                    <p:column>
+                        <f:facet name="header"># Id</f:facet>
+                        <h:outputText value="#{product.id}" />
+                    </p:column>
 
-import java.util.List;
+                    <p:column>
+                        <f:facet name="header">Nome</f:facet>
+                        <h:outputText value="#{product.name}" />
+                    </p:column>
 
-@Scope (value = "session")
-@Component (value = "productList")
-@ELBeanName(value = "productList")
-@Join(path = "/", to = "/product-list.jsf")
-public class ProductListController {
-    @Autowired
-    private ProductRepository productRepository;
-
-    private List<Product> products;
-
-    @Deferred
-    @RequestAction
-    @IgnorePostback
-    public void loadData() {
-        products = productRepository.findAll();
-    }
-
-    public List<Product> getProducts() {
-        return products;
-    }
-}
+                    <p:column>
+                        <f:facet name="header">Preco</f:facet>
+                        <h:outputText value="#{product.price}">
+                            <f:convertNumber type="currency" currencySymbol="$ " />
+                        </h:outputText>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>
+</html>
